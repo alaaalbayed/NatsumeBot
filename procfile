@@ -1,1 +1,1 @@
-web: node natsume.js
+web: javascript natsume.js
