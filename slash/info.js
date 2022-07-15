@@ -14,11 +14,11 @@ module.exports = {
 		})
 
         const song = queue.current
-
+		const currentSong = queue.current
 		await interaction.editReply({
 			embeds: [new MessageEmbed()
             .setThumbnail(song.thumbnail)
-            .setDescription(`Currently Playing [${song.title}](${song.url})\n\n` + bar)
+            .setDescription(`Currently Playing [${song.title}](${song.url})\n\nrequest by <@${currentSong.requestedBy.id}>`)
         ],
 		})
 	},

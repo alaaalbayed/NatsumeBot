@@ -4,14 +4,16 @@ const { REST } = require("@discordjs/rest")
 const { Routes } = require("discord-api-types/v9")
 const fs = require("fs")
 const { Player } = require("discord-player")
+const { type } = require("os")
+const { Console } = require("console")
+const { val } = require("cheerio/lib/api/attributes")
+
 
 dotenv.config()
 const TOKEN = process.env.TOKEN
 
 const LOAD_SLASH = process.argv[2] == "load"
-
-const CLIENT_ID = "996299474265714768"
-const GUILD_ID = "953626539596070932"
+var id
 
 const client = new Discord.Client({
     intents: [
@@ -19,6 +21,11 @@ const client = new Discord.Client({
         "GUILD_VOICE_STATES"
     ]
 })
+
+
+
+const CLIENT_ID = "996299474265714768"
+var GUILD_ID = "997462220030099536"
 
 client.slashcommands = new Discord.Collection()
 client.player = new Player(client, {
@@ -38,6 +45,7 @@ for (const file of slashFiles){
 }
 
 if (LOAD_SLASH) {
+    var arr
     const rest = new REST({ version: "9" }).setToken(TOKEN)
     console.log("Deploying slash commands")
     rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {body: commands})
@@ -55,8 +63,17 @@ if (LOAD_SLASH) {
 else {
     client.on("ready", () => {
         console.log(`Logged in as ${client.user.tag}`)
+        client.user.setActivity(`/play`, {type: "PLAYING"})
+
+        client.guilds.cache.forEach((guild) => {
+            
+            id = guild.id
+        })
+        arr = id
+        console.log(arr)    
     })
     client.on("interactionCreate", (interaction) => {
+        
         async function handleCommand() {
             if (!interaction.isCommand()) return
 
